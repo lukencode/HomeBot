@@ -13,6 +13,8 @@ namespace HomeBot.Core.Communication
         event OnRequestMessageHandler OnMessage;
         void OpenConnection();
         void Configure(ServerConfiguration configuration);
+        void AddUser(BotUser user);
+        IEnumerable<BotUser> GetUsers();
     }
 
     public delegate void OnRequestMessageHandler(object sender, OnMessageHandlerArgs args);

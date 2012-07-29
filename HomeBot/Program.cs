@@ -7,11 +7,10 @@ using System.Configuration;
 using System.IO;
 using System.ComponentModel.Composition.Hosting;
 using System.ComponentModel.Composition.Primitives;
-using HomeBot.Core.Command.Announce;
 using HomeBot.Core;
 using NLog;
 using System.Reflection;
-using HomeBot.Core.Command.Respond;
+using HomeBot.Core.Base;
 
 namespace HomeBot
 {
@@ -21,7 +20,7 @@ namespace HomeBot
         private static readonly string _connectServerUrl = ConfigurationManager.AppSettings["Bot.ConnectServer"];
         private static readonly string _botName = ConfigurationManager.AppSettings["Bot.User"];
         private static readonly string _botPassword = ConfigurationManager.AppSettings["Bot.Password"];
-        private static bool _appShouldExit = false;
+        private static readonly string _adminUser = ConfigurationManager.AppSettings["AdminUser"];
 
         private const string ExtensionsFolder = "Extensions";
 
@@ -38,13 +37,14 @@ namespace HomeBot
                 //grab extensions
                 var container = CreateCompositionContainer();
                 var announcers = container.GetExportedValues<IAnnounce>();
-                var handlers = container.GetExportedValues<IMessageHandler>();
+                var handlers = container.GetExportedValues<ICommand>();
 
                 //fire her up
                 var bot = new HomeBotController(comm, new Scheduler(), announcers, handlers);
                 bot.Start();
 
-                Console.Write("Press enter to quit...");
+                comm.AddUser(new BotUser() { Name = _adminUser });
+
                 Console.ReadLine();
 
                 bot.Stop();

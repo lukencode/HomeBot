@@ -19,13 +19,13 @@ namespace HomeBot.Core.Communication
         private XmppClientConnection _xmpp;
         private bool _sockWasConnected = false;
 
-        private List<string> _users;
+        private List<BotUser> _users;
 
         private static Logger _logger = LogManager.GetCurrentClassLogger();
 
         public void Configure(ServerConfiguration configuration)
         {
-            _users = new List<string>();
+            _users = new List<BotUser>();
 
             _xmpp = new XmppClientConnection
             {
@@ -42,14 +42,24 @@ namespace HomeBot.Core.Communication
             RegisterXmppEventHandlers();
         }
 
+        public void AddUser(BotUser user)
+        {
+            _users.Add(user);
+
+            _xmpp.PresenceManager.Subscribe(user.Name);
+            _xmpp.RosterManager.AddRosterItem(user.Name);
+        }
+
+        public IEnumerable<BotUser> GetUsers()
+        {
+            return _users.ToList();
+        }
+
         private void RegisterXmppEventHandlers()
         {
             _xmpp.OnMessage += xmpp_OnMessage;
-            _xmpp.OnReadXml += xmpp_OnReadXml;
-            _xmpp.OnWriteXml += xmpp_OnWriteXml;
             _xmpp.OnLogin += xmpp_OnLogin;
             _xmpp.OnAuthError += xmpp_OnAuthError;
-            _xmpp.OnSocketError += xmpp_OnSocketError;
             _xmpp.OnError += xmpp_OnError;
             _xmpp.OnXmppConnectionStateChanged += xmpp_OnXmppConnectionStateChanged;
             _xmpp.OnClose += xmpp_OnClose;
@@ -59,30 +69,34 @@ namespace HomeBot.Core.Communication
 
         void _xmpp_OnPresence(object sender, Presence pres)
         {
+            var user = _users.FirstOrDefault(u => u.Name.ToLower() == pres.From.Bare);
+
+            if (user == null)
+                return;
+
+            if (pres.Type == PresenceType.subscribe)
+                _xmpp.PresenceManager.ApproveSubscriptionRequest(pres.From);
+
             if (pres.Type == PresenceType.available)
             {
-                if (!_users.Contains(pres.From.Bare))
-                    _users.Add(pres.From.Bare);
+                user.Online = true;
             }
-            else if (pres.Type == PresenceType.unavailable || pres.Type == PresenceType.unsubscribe)
+            else if (pres.Type == PresenceType.unavailable)
             {
-                if (_users.Contains(pres.From.Bare))
-                    _users.Remove(pres.From.Bare);
+                user.Online = false;
+            }
+            else if (pres.Type == PresenceType.unsubscribe)
+            {
+                _users.Remove(user);
             }
         }
 
         private void _xmpp_OnRosterItem(object sender, agsXMPP.protocol.iq.roster.RosterItem item)
         {
-            //if (item.Ask == AskType.subscribe)
-            //{
-            //    if (!_users.Contains(item.Jid.Bare))
-            //        _users.Add(item.Jid.Bare);
-            //}
-            //else if (item.Ask == AskType.unsubscribe)
-            //{
-            //    if (_users.Contains(item.Jid.Bare))
-            //        _users.Remove(item.Jid.Bare);
-            //}
+            var user = _users.FirstOrDefault(u => u.Name.ToLower() == item.Jid.Bare);
+
+            if (user == null)
+                return;
         }
 
         public void OpenConnection()
@@ -112,8 +126,8 @@ namespace HomeBot.Core.Communication
 
         public void SendMessageToAll(string message)
         {
-            foreach (var u in _users)
-                SendMessage(u, message);
+            foreach (var u in _users.Where(u => u.Online))
+                SendMessage(u.Name, message);
         }
 
         private void xmpp_OnClose(object sender)
@@ -158,24 +172,30 @@ namespace HomeBot.Core.Communication
             }
         }
 
-        private void xmpp_OnWriteXml(object sender, string xml)
-        {
-            _logger.Debug("OnWriteXml : {0}", xml);
-        }
-
-        private void xmpp_OnReadXml(object sender, string xml)
-        {
-            _logger.Debug("OnReadXml : {0}", xml);
-        }
-
         private void xmpp_OnMessage(object sender, Message msg)
         {
             _logger.Info("OnMessage : {0} - {1}", msg.Type, msg.Body);
+            var user = _users.FirstOrDefault(u => u.Name.ToLower() == msg.From.Bare.ToLower());
 
-            if (ShouldHandleMessage(msg))
+            if (user == null) 
             {
-                OnMessage(this, new OnMessageHandlerArgs(new ChatMessage { From = msg.From.Bare, Message = msg.Body }));
+                SendMessage(msg.From.Bare, "ACCESS DENIED");
+                _logger.Warn("UnAuthorized Message : {0} - {1}", msg.From.Bare, msg.Body);
             }
+            else
+            {
+                user.Online = true;
+
+                if (ShouldHandleMessage(msg))
+                {
+                    OnMessage(this, new OnMessageHandlerArgs(new ChatMessage { From = msg.From.Bare, Message = msg.Body }));
+                }
+            }
+        }
+
+        private bool ShouldHandleMessage(Message msg)
+        {
+            return msg.Type == MessageType.chat && !string.IsNullOrEmpty(msg.Body);
         }
 
         private void xmpp_OnError(object sender, Exception ex)
@@ -183,19 +203,9 @@ namespace HomeBot.Core.Communication
             _logger.Error("OnError : {0} - {1}", ex.Message, ex.StackTrace);
         }
 
-        private void xmpp_OnSocketError(object sender, Exception ex)
-        {
-            _logger.Error("OnSocketError : message = {0} - stack trace = {1}", ex.Message, ex.StackTrace);
-        }
-
         private void xmpp_OnAuthError(object sender, Element e)
         {
             _logger.Error("OnAuthError : Authorization Error");
-        }
-
-        private bool ShouldHandleMessage(Message msg)
-        {
-            return msg.Type == MessageType.chat && !string.IsNullOrEmpty(msg.Body);
         }
     }
 }

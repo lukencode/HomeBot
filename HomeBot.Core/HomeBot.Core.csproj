@@ -39,6 +39,9 @@
     <Reference Include="NCalc">
       <HintPath>..\packages\ncalc.1.3.8\lib\NCalc.dll</HintPath>
     </Reference>
+    <Reference Include="NDesk.Options">
+      <HintPath>..\packages\NDesk.Options.0.2.1\lib\NDesk.Options.dll</HintPath>
+    </Reference>
     <Reference Include="NLog">
       <HintPath>..\packages\NLog.2.0.0.2000\lib\net40\NLog.dll</HintPath>
     </Reference>
@@ -52,20 +55,22 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Command\Announce\IAnnounce.cs" />
-    <Compile Include="Command\Announce\IScheduler.cs" />
-    <Compile Include="Command\Announce\PulseAnnouncer.cs" />
-    <Compile Include="Command\Respond\BuiltIn\CalculatorResponder.cs" />
-    <Compile Include="Command\Respond\BuiltIn\IPityTheFoolResponder.cs" />
-    <Compile Include="Command\Respond\IMessageHandler.cs" />
-    <Compile Include="Command\Respond\IRegexHandler.cs" />
+    <Compile Include="Base\IAnnounce.cs" />
+    <Compile Include="Base\IScheduler.cs" />
+    <Compile Include="Base\CommandAttribute.cs" />
+    <Compile Include="Base\ICommand.cs" />
+    <Compile Include="Communication\BotUser.cs" />
     <Compile Include="Communication\ChatMessage.cs" />
     <Compile Include="Communication\ICommunicator.cs" />
     <Compile Include="Communication\OnMessageHandlerArgs.cs" />
     <Compile Include="Communication\ServerConfiguration.cs" />
     <Compile Include="Communication\XMPPCommunicator.cs" />
+    <Compile Include="Helpers\StringExtensions.cs" />
     <Compile Include="HomeBotController.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="System\SayCommand.cs" />
+    <Compile Include="System\SystemCommand.cs" />
+    <Compile Include="System\UserCommand.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Logging\" />

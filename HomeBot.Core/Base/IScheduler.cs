@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using HomeBot.Core.Communication;
 
-namespace HomeBot.Core.Command.Announce
+namespace HomeBot.Core.Base
 {
     public interface IScheduler
     {

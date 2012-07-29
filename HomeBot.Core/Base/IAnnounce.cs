@@ -5,7 +5,7 @@ using System.Text;
 using HomeBot.Core.Communication;
 using System.ComponentModel.Composition;
 
-namespace HomeBot.Core.Command.Announce
+namespace HomeBot.Core.Base
 {
     [InheritedExport]
     public interface IAnnounce

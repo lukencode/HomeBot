@@ -4,8 +4,8 @@ using System.Linq;
 using System.Text;
 using HomeBot.Core.Communication;
 using System.Timers;
-using HomeBot.Core.Command.Announce;
 using NLog;
+using HomeBot.Core.Base;
 
 namespace HomeBot
 {
@@ -30,7 +30,7 @@ namespace HomeBot
             _timer.Elapsed += HandleResult;
             _timer.Start();
 
-            _logger.Info("HomeBot is active");
+            _logger.Info("Scheduler is active");
         }
 
         private void HandleResult(object state, ElapsedEventArgs elapsedEventArgs)
@@ -52,7 +52,7 @@ namespace HomeBot
         {
             _timer.Stop();
 
-            _logger.Info("HomeBot shutting down...");
+            _logger.Info("Scheduler shutting down...");
         }
     }
 }

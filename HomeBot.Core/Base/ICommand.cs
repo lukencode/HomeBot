@@ -5,11 +5,11 @@ using System.Text;
 using System.ComponentModel.Composition;
 using HomeBot.Core.Communication;
 
-namespace HomeBot.Core.Command.Respond
+namespace HomeBot.Core.Base
 {
     [InheritedExport]
-    public interface IMessageHandler
+    public interface ICommand
     {
-        bool Handle(ChatMessage message, ICommunicator comm);
+        void Process(ChatMessage message, ICommunicator comm);
     }
 }
