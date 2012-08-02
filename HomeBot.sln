@@ -1,6 +1,6 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2010
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HomeBot", "HomeBot\HomeBot.csproj", "{6C9AA365-F1A9-420A-9247-5C2D92C7E759}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HomeBot.Core", "HomeBot.Core\HomeBot.Core.csproj", "{AB99FBB6-C010-4A6E-AD01-BA5F2737BC9F}"
@@ -10,6 +10,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{59AB3E
 		.nuget\NuGet.exe = .nuget\NuGet.exe
 		.nuget\NuGet.targets = .nuget\NuGet.targets
 	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KinectZor.Viewer", "KinectZor.Viewer\KinectZor.Viewer.csproj", "{0DAFC59E-1E44-4207-B66F-314AF5B154BE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KinectZor", "KinectZor\KinectZor.csproj", "{6C4E05CE-145C-4BEB-BC55-9F44A545639C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +25,26 @@ Global
 		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{0DAFC59E-1E44-4207-B66F-314AF5B154BE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0DAFC59E-1E44-4207-B66F-314AF5B154BE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0DAFC59E-1E44-4207-B66F-314AF5B154BE}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{0DAFC59E-1E44-4207-B66F-314AF5B154BE}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{0DAFC59E-1E44-4207-B66F-314AF5B154BE}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{0DAFC59E-1E44-4207-B66F-314AF5B154BE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0DAFC59E-1E44-4207-B66F-314AF5B154BE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0DAFC59E-1E44-4207-B66F-314AF5B154BE}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{0DAFC59E-1E44-4207-B66F-314AF5B154BE}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{0DAFC59E-1E44-4207-B66F-314AF5B154BE}.Release|x86.ActiveCfg = Release|Any CPU
+		{6C4E05CE-145C-4BEB-BC55-9F44A545639C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6C4E05CE-145C-4BEB-BC55-9F44A545639C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6C4E05CE-145C-4BEB-BC55-9F44A545639C}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{6C4E05CE-145C-4BEB-BC55-9F44A545639C}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{6C4E05CE-145C-4BEB-BC55-9F44A545639C}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{6C4E05CE-145C-4BEB-BC55-9F44A545639C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6C4E05CE-145C-4BEB-BC55-9F44A545639C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6C4E05CE-145C-4BEB-BC55-9F44A545639C}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{6C4E05CE-145C-4BEB-BC55-9F44A545639C}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{6C4E05CE-145C-4BEB-BC55-9F44A545639C}.Release|x86.ActiveCfg = Release|Any CPU
 		{6C9AA365-F1A9-420A-9247-5C2D92C7E759}.Debug|Any CPU.ActiveCfg = Debug|x86
 		{6C9AA365-F1A9-420A-9247-5C2D92C7E759}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
 		{6C9AA365-F1A9-420A-9247-5C2D92C7E759}.Debug|Mixed Platforms.Build.0 = Debug|x86
